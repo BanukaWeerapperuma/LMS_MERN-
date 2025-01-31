@@ -10,7 +10,7 @@ const CourseDetails = () => {
   const [courseData, setCourseData] = useState(null);
   const [openSections, setOpenSections] = useState({});
 
-  const { allCourses, calculateRating, calculateChapterTime, calculateCourseDuration, calculateNoOfLectures } = useContext(AppContext);
+  const { allCourses, calculateRating, calculateChapterTime, calculateCourseDuration, calculateNoOfLectures, currency } = useContext(AppContext);
 
   const fetchCourseData = async () => {
     const findedCourse = allCourses.find(course => course._id === id);
@@ -26,6 +26,8 @@ const CourseDetails = () => {
       [sectionId]: !prevOpenSections[sectionId],
     }));
   }
+
+
   useEffect(() => {
     fetchCourseData();
   }, [allCourses]); // Ensures update when allCourses change
@@ -63,8 +65,8 @@ const CourseDetails = () => {
               <div key={index} className="border border-gray-300 bg-gray-300/30 mb-2 rounded shadow-2xs">
                 <div className="flex justify-between items-center py-3 px-4 cursor-pointer select-none" onClick={() => toggleSection(index)}>
                   <div className="flex items-center gap-2">
-                    <img className={`transform transition-transform duration-300 ${openSections[index] ? "rotate-180" : ""}`}                    
-                    src={assets.down_arrow_icon} alt="down_arrow_icon" />
+                    <img className={`transform transition-transform duration-300 ${openSections[index] ? "rotate-180" : ""}`}
+                      src={assets.down_arrow_icon} alt="down_arrow_icon" />
                     <p className="font-medium md:text-base text-sm">{chapter.chapterTitle}</p>
                   </div>
                   <p className="md:text-default text-sm">{chapter.chapterContent.length} lectures - {calculateChapterTime(chapter)}</p>
@@ -89,10 +91,86 @@ const CourseDetails = () => {
             ))}
           </div>
         </div>
+        <div className="py-20 text-sm md:text-default">
+          <h3 className="text-gray-800 text-xl font-semibold pb-6">Course Description</h3>
+
+          {/* Course Description ---- Starts here o want to change the course description */}
+
+          <div className="">
+            <h2 className="text-gray-800 text-xl font-semibold" dangerouslySetInnerHTML={{ __html: courseData.courseDescription.split("</h2>")[0] }}></h2>
+
+            <p className="pt-3 text-blue-700 text-sm" dangerouslySetInnerHTML={{ __html: courseData.courseDescription.split("</p>")[1] }}></p>
+            <p className="pt-3 text-blue-700 text-sm" dangerouslySetInnerHTML={{ __html: courseData.courseDescription.split(".")[2] }}></p>
+            <p className="pt-2 text-gray-700" dangerouslySetInnerHTML={{ __html: courseData.courseDescription.split("")[3] }}></p>
+
+            <ul className="list-disc pl-6 pt-4 space-y-2 text-gray-700">
+              {courseData.courseDescription.split(",").slice(3).map((line, index) => (
+                line.trim() && (
+                  <li key={index} dangerouslySetInnerHTML={{ __html: line }}></li>
+                )
+              ))}
+            </ul>
+          </div>
+
+          {/* Course Description ---- Ends here*/}
+
+
+
+
+
+        </div>
+
+        {/* Right Column (if needed in the future) */}
+      </div >
+
+      <div className="max-w-course-card z-10 w-full shadow-custom-card rounded-t md:rounded-none overflow-hidden bg-white min-w-[300px] sm:min-w-[420px]">
+  <img src={courseData.courseThumbnail} alt="course thumbnail" />
+  <div className="p-5">
+    <div className="flex items-center gap-2">
+      <img className="w-3.5" src={assets.time_left_clock_icon} alt="time left clock icon" />
+      <p className="text-red-500">
+        <span className="font-medium">5 days</span> left at this price
+      </p>
+    </div>
+
+    <div className="flex gap-3 items-center pt-2">
+      <p className="text-gray-800 md:text-4xl text-2xl font-semibold">
+        {currency}{(courseData.coursePrice - (courseData.discount * courseData.coursePrice) / 100).toFixed(2)}
+      </p>
+      <p className="line-through text-gray-500 md:text-lg">
+        {currency}{courseData.coursePrice.toFixed(2)}
+      </p>
+      <p className="text-gray-500 md:text-lg">You save {courseData.discount}%</p>
+    </div>
+
+    <div className="flex gap-4 pt-2 items-center text-sm md:text-default md:pt-4 text-gray-500">
+      <div className="flex items-center gap-1">
+        <img src={assets.star} alt="star icon" />
+        <p>{calculateRating(courseData)}</p>
       </div>
 
-      {/* Right Column (if needed in the future) */}
+      <div className="h-4 w-px bg-gray-500/40"></div>
+
+      <div className="flex items-center gap-1">
+        <img src={assets.time_clock_icon} alt="clock icon" />
+        <p>{calculateCourseDuration(courseData)}</p>
+      </div>
+
+      <div className="h-4 w-px bg-gray-500/40"></div>
+
+      <div className="flex items-center gap-1">
+        <img src={assets.lesson_icon} alt="lecture icon" />
+        <p>{calculateNoOfLectures(courseData)} lessons</p>
+      </div>
     </div>
+  </div>
+</div>
+
+
+                
+      
+    </div>
+
   );
 };
 
