@@ -6,6 +6,7 @@ import { assets } from "../../assets/assets";
 import humanizeDuration from "humanize-duration";
 import Footer from "../../components/student/Footer";
 import YouTube from "react-youtube";
+import Rating from "../../components/student/Rating";
 
 
 const Player = () => {
@@ -58,16 +59,7 @@ const Player = () => {
           <p className="pt-4 md:text-base text-sm" dangerouslySetInnerHTML={{ __html: courseData.courseDescription.slice(0, 200) }}></p>
 
           {/* Review Section */}
-          <div className="flex items-center space-x-2 pt-3 pb-1 text-sm">
-            <p>{calculateRating(courseData)}</p>
-            <div className="flex">
-              {[...Array(5)].map((_, index) => (
-                <img key={index} src={index < Math.floor(calculateRating(courseData)) ? assets.star : assets.star_blank} alt="" className="w-3.5 h-3.5" />
-              ))}
-            </div>
-            <p className="text-gray-600">({courseData.courseRatings.length} {courseData.courseRatings.length > 1 ? "ratings" : "rating"})</p>
-            <p>{courseData.enrolledStudents.length} {courseData.enrolledStudents.length > 1 ? "students" : "student"}</p>
-          </div>
+          
 
           <p className="text-sm">Course by <span className="text-blue-600 underline">Tech Team</span></p>
 
@@ -105,6 +97,10 @@ const Player = () => {
                   </div>
                 </div>
               ))}
+            </div>
+            <div className="flex items-center gap-2 py-3 mt-10">
+              <h1 className="text-xl font-bold">Rate This Course :</h1>
+              <Rating initialRating={courseData.courseRatings.reduce((total, rating) => total + rating.rating, 0) / courseData.courseRatings.length}/>
             </div>
           </div>
 
