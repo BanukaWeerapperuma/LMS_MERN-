@@ -7,6 +7,8 @@ import {Line} from 'rc-progress'
 
 
 
+
+
 const MyEnrollments = () => {
 
   const { enrolledCourses , calculateCourseDuration , navigate} = useContext(AppContext)
@@ -60,7 +62,7 @@ const MyEnrollments = () => {
                   {progress.lectureCompleted}/{progress.totalLectures} <span>Lectures</span>
                 </td>
                 <td className='px-4 py-3 max-sm:text-right'>
-                  <button onClick={() => navigate('/player' + course._id)}
+                  <button onClick={() => navigate('/player/' + course._id)}
                     className={`px-3 sm:px-5 py-1.5 sm:py-2 cursor-pointer text-white rounded ${
                       isCompleted ? 'bg-green-600' : 'bg-blue-600'
                     }`}

@@ -85,11 +85,11 @@ const CourseDetails = () => {
                     </div>
                     <p className="md:text-default text-sm">{chapter.chapterContent.length} lectures - {calculateChapterTime(chapter)}</p>
                   </div>
-                  <div className={`overflow-hidden transition-all duration-300 ${openSections[index] ? "max-h-96full" : "max-h-0"}`}>
+                  <div className={`overflow-hidden transition-all duration-300 ${openSections[index] ? "max-h-96" : "max-h-0"}`}>
                     <ul className="list-disc md:pl-10 pl-4 pr-4 py-2 text-blue-300 border-t border-b-gray-300">
                       {chapter.chapterContent.map((lecture, index) => (
                         <li key={index} className="flex items-start gap-2 py-2">
-                          <img src={assets.play_icon} alt="play_icon" className="w-4" />
+                          <img src={assets.play_icon} alt="play_icon" className="w-4 h-4 mt-1" />
                           <div className="flex items-center justify-between w-full text-gray-800 text-xs md:text-default">
                             <p>{lecture.lectureTitle}</p>
                             <div className="flex items-center gap-2">
